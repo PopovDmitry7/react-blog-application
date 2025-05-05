@@ -1,6 +1,6 @@
 import { Grid, Divider } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import BlogPostCard from "../components/BlogPostCard";
+import BlogPostCard from "./BlogPostCard";
 import { Post } from "../types";
 
 interface BlogListProps {
