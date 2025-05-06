@@ -1,13 +1,36 @@
-import { Grid, Divider } from "@mui/material";
+import { Divider } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import BlogPostCard from "./BlogPostCard";
 import { Post } from "../types";
+import { useState } from "react";
+import AppPagination from "./AppPagination";
+import PaginatedPosts from "./PaginatedPosts";
 
 interface BlogListProps {
   posts: Post[];
 }
 
+const pageSize = 10;
+
 export default function BlogList({ posts }: BlogListProps) {
+  const [pagination, setPagination] = useState({
+    count: posts.length,
+    from: 0,
+    to: pageSize,
+  });
+
+  const handlePageChange = (pageNumber: number) => {
+    const newFrom = (pageNumber - 1) * pageSize;
+    const newTo = pageNumber * pageSize;
+    
+    setPagination((prev) => {
+      return {
+        ...prev,
+        from: newFrom,
+        to: newTo,
+      };
+    });
+  };
+
   return (
     <>
       <Typography variant="h4" sx={{ fontStyle: "italic" }}>
@@ -18,28 +41,15 @@ export default function BlogList({ posts }: BlogListProps) {
             mb: 2,
             ml: 0,
             maxWidth: 300,
+            borderBottom: "0.1rem solid #2C3E50",
           }}
         />
       </Typography>
-      <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {posts.map((post, idx) => (
-          <Grid
-            key={idx}
-            size={{ xs: 4, sm: 4, md: 4 }}
-            sx={{
-              display: "flex",
-            }}
-          >
-            <BlogPostCard
-              cardParms={{
-                id: post.id,
-                title: post.title,
-                description: post.body,
-              }}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <PaginatedPosts posts={posts} from={pagination.from} to={pagination.to} />
+      <AppPagination
+        count={Math.ceil(pagination.count / pageSize)}
+        handleChange={(event, page) => handlePageChange(page)}
+      />
     </>
   );
 }

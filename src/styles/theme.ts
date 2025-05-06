@@ -3,16 +3,16 @@ import { createTheme } from "@mui/material/styles";
 const defaultTheme = createTheme({
   palette: {
     primary: {
-      main: "#36454F", // header & footer background
-      contrastText: "#fff",
+      main: "#2C3E50", // header & footer background
+      contrastText: "#ECF0F1",
     },
-    divider: "#1C2321", // divider and border color
+    divider: "#BDC3C7", // divider and border color
     background: {
-      default: "#BCC9D2", // page/body background
-      paper: "#BCC9D2", // use same for surface if you like
+      default: "#ECF0F1", // page/body background
+      paper: "#ECF0F1", // use same for surface if you like
     },
     text: {
-      primary: "#1C2321", // good contrast on light body
+      primary: "#2C3E50", // good contrast on light body
     },
   }});
 

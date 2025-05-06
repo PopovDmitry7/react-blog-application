@@ -3,7 +3,7 @@ import { useTypewriter, Cursor } from "react-simple-typewriter";
 
 export default function AnimatedLogo() {
   const [text] = useTypewriter({
-    words: ['DAILY BLOG'],
+    words: ["DAILY BLOG"],
     typeSpeed: 100,
     delaySpeed: 2000,
     loop: false,
@@ -21,6 +21,9 @@ export default function AnimatedLogo() {
         letterSpacing: "0.2rem",
         color: "inherit",
         textDecoration: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        MozUserSelect: "none",
       }}
     >
       CHOOSE YOUR&nbsp;
@@ -36,8 +39,8 @@ export default function AnimatedLogo() {
         }}
       >
         {text}
+        <Cursor cursorColor="#8482FF" />
       </Typography>
-      <Cursor cursorColor="#8482FF"/>
     </Typography>
   );
 }

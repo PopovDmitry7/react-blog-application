@@ -43,6 +43,10 @@ export default function DrawerAppBar() {
           letterSpacing: ".3rem",
           color: "inherit",
           textDecoration: "none",
+          py: "0.4rem",
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
         }}
       >
         DAILY&nbsp;
@@ -58,7 +62,7 @@ export default function DrawerAppBar() {
         LOG
       </Typography>
       <Divider />
-      <List>
+      <List disablePadding>
         {navItems.map((item) => (
           <ListItem key={item.title} disablePadding>
             <ListItemButton

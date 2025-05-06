@@ -29,7 +29,7 @@ export default function MainLayout() {
         >
           <Outlet />
         </Box>
-        <Divider sx={{ bgcolor: "#1C2321", height: 1 }} />
+        <Divider sx={{ bgcolor: "divider", height: 1 }} />
         <Footer />
       </Box>
     </ThemeProvider>
