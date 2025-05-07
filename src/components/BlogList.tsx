@@ -1,5 +1,3 @@
-import { Divider } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import { Post } from "../types";
 import { useState } from "react";
 import AppPagination from "./AppPagination";
@@ -7,13 +5,14 @@ import PaginatedPosts from "./PaginatedPosts";
 import PaginationSettingsBar from "./PaginationSettingsBar";
 
 interface BlogListProps {
-  posts: Post[];
+  postsProps: Post[];
 }
 
-export default function BlogList({ posts }: BlogListProps) {
+export default function BlogList({ postsProps }: BlogListProps) {
   const [pageSize, setPageSize] = useState(6);
   const [pagination, setPagination] = useState({
-    count: posts.length,
+    count: postsProps.length,
+    sort: "asc",
     page: 1,
     from: 0,
     to: pageSize,
@@ -45,27 +44,29 @@ export default function BlogList({ posts }: BlogListProps) {
     });
   };
 
+  const handleSortChange = () => {
+    setPagination((prev) => {
+      return {
+        ...prev,
+        sort: prev.sort === 'asc'? 'desc' : 'asc',
+        page: 1,
+        from: 0,
+        to: pageSize,
+      };
+    });
+  };
+
   return (
     <>
-      <Typography variant="h4" sx={{ fontStyle: "italic" }}>
-        TODAY'S FEED
-        <Divider
-          sx={{
-            mt: 1,
-            mb: 2,
-            ml: 0,
-            maxWidth: 300,
-            borderBottom: "0.1rem solid #2C3E50",
-          }}
-        />
-      </Typography>
       <PaginationSettingsBar
         pageSize={pageSize}
-        handleChange={(changedPageSize) =>
+        sort={pagination.sort}
+        handlePageSizeChange={(changedPageSize) =>
           handlePageSizeChange(changedPageSize)
         }
+        handleSortChange={handleSortChange}
       />
-      <PaginatedPosts posts={posts} from={pagination.from} to={pagination.to} />
+      <PaginatedPosts posts={postsProps} pagination={pagination}/>
       <AppPagination
         count={Math.ceil(pagination.count / pageSize)}
         page={pagination.page}

@@ -12,3 +12,11 @@ export interface CommentData {
   email: string;
   body: string;
 }
+
+export interface PaginationType{
+  count: number,
+  sort: string,
+  page: number,
+  from: number,
+  to: number,
+}

@@ -24,5 +24,5 @@ export default function Home() {
 
   if (error) return <Typography color="error">Error: {error}</Typography>;
 
-  return <BlogList posts={posts} />;
+  return <BlogList postsProps={posts} />;
 }

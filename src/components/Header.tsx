@@ -17,7 +17,10 @@ import Button from "@mui/material/Button";
 import AnimatedLogo from "./AnimatedLogo";
 
 const drawerWidth = 240;
-const navItems = [{ title: "Home", path: "/" }];
+const navItems = [
+  { title: "Home", path: "/" },
+  { title: "About", path: "/about" },
+];
 
 export default function DrawerAppBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -111,7 +114,7 @@ export default function DrawerAppBar() {
             <MenuIcon />
           </IconButton>
           <AnimatedLogo />
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 1}}>
             {navItems.map((item) => (
               <Button
                 component={ReactRouterLink}

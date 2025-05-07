@@ -1,9 +1,9 @@
 import { Box, Pagination } from "@mui/material";
 
 interface AppPaginationProps {
-  count: number,
-  page: number,
-  handleChange: (_event: React.ChangeEvent<unknown>, page: number) => void,
+  count: number;
+  page: number;
+  handleChange: (_event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
 export default function AppPagination({
@@ -15,12 +15,17 @@ export default function AppPagination({
     <Box justifyContent={"center"} alignItems={"center"} display={"flex"}>
       <Pagination
         count={count}
+        page={page}
         onChange={handleChange}
         variant="outlined"
         color="primary"
         shape="rounded"
         size="large"
-        page={page}
+        sx={{
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
+        }}
       />
     </Box>
   );

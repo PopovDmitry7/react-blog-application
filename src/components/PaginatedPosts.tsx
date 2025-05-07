@@ -1,19 +1,24 @@
 import { Grid } from "@mui/material";
 import BlogPostCard from "./BlogPostCard";
 import { Post } from "../types";
+import { PaginationType } from "../types";
 
 interface PaginatedPostsProps {
   posts: Post[];
-  from: number;
-  to: number;
+  pagination: PaginationType;
 }
 
 export default function PaginatedPosts({
   posts,
-  from,
-  to,
+  pagination,
 }: PaginatedPostsProps) {
-  let postSection = posts.slice(from, to);
+  const sortedPosts = [...posts].sort((a, b) =>
+    pagination.sort === "asc"
+      ? a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+      : b.title.localeCompare(a.title, undefined, { sensitivity: "base" })
+  );
+
+  let postSection = sortedPosts.slice(pagination.from, pagination.to);
 
   return (
     <>
