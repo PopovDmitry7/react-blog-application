@@ -39,16 +39,16 @@ This project is a simple blog application built with **React** and **Material UI
 - Use TypeScript for type safety.
 
 ### 6. Pagination for Blog List
-Chunk posts into pages.
-Default page size = 10 (feel free to tweak).
-Show MUI Pagination component at bottom.
+- Chunk posts into pages.
+    - Default page size = 10 (feel free to tweak).
+    - Show MUI Pagination component at bottom.
 
 ### 7. Page-Size Selector
-Add a dropdown (e.g. MUI Select) letting users choose how many posts per page
+- Add a dropdown (e.g. MUI Select) letting users choose how many posts per page
 
 ### 8. Title Sorting Filter
-Provide A→Z and Z→A options – a simple toggle or Select.
-Sorting should integrate smoothly with search & pagination (e.g., apply sort first, then paginate).
+- Provide A→Z and Z→A options – a simple toggle or Select.
+- Sorting should integrate smoothly with search & pagination (e.g., apply sort first, then paginate).
 
 ## 🚀 Getting Started
 
