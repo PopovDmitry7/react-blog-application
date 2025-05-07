@@ -32,16 +32,10 @@ This project is a simple blog application built with **React** and **Material UI
     - `/` → Blog list page
     - `/post/:id` → Post details page
 
-## 🌟 Bonus (Optional)
-- Show a loading spinner while fetching data.
-- Handle errors gracefully (e.g., display a message if data fails to load).
-- Add a search bar to filter posts by title.
-- Use TypeScript for type safety.
-
 ### 6. Pagination for Blog List
 - Chunk posts into pages.
-    - Default page size = 10 (feel free to tweak).
-    - Show MUI Pagination component at bottom.
+- Default page size = 10 (feel free to tweak).
+- Show MUI Pagination component at bottom.
 
 ### 7. Page-Size Selector
 - Add a dropdown (e.g. MUI Select) letting users choose how many posts per page
@@ -49,6 +43,12 @@ This project is a simple blog application built with **React** and **Material UI
 ### 8. Title Sorting Filter
 - Provide A→Z and Z→A options – a simple toggle or Select.
 - Sorting should integrate smoothly with search & pagination (e.g., apply sort first, then paginate).
+
+## 🌟 Bonus (Optional)
+- Show a loading spinner while fetching data.
+- Handle errors gracefully (e.g., display a message if data fails to load).
+- Add a search bar to filter posts by title.
+- Use TypeScript for type safety.
 
 ## 🚀 Getting Started
 
