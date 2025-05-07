@@ -26,6 +26,7 @@ export default function BlogList({ posts }: BlogListProps) {
     setPagination((prev) => {
       return {
         ...prev,
+        page: pageNumber,
         from: newFrom,
         to: newTo,
       };
