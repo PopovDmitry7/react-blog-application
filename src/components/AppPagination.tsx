@@ -1,12 +1,14 @@
 import { Box, Pagination } from "@mui/material";
 
 interface AppPaginationProps {
-  count: number;
-  handleChange: (event: React.ChangeEvent<unknown>, page: number) => void;
+  count: number,
+  page: number,
+  handleChange: (_event: React.ChangeEvent<unknown>, page: number) => void,
 }
 
 export default function AppPagination({
   count,
+  page,
   handleChange,
 }: AppPaginationProps) {
   return (
@@ -18,6 +20,7 @@ export default function AppPagination({
         color="primary"
         shape="rounded"
         size="large"
+        page={page}
       />
     </Box>
   );

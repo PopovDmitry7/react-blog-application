@@ -4,16 +4,17 @@ import { Post } from "../types";
 import { useState } from "react";
 import AppPagination from "./AppPagination";
 import PaginatedPosts from "./PaginatedPosts";
+import PaginationSettingsBar from "./PaginationSettingsBar";
 
 interface BlogListProps {
   posts: Post[];
 }
 
-const pageSize = 10;
-
 export default function BlogList({ posts }: BlogListProps) {
+  const [pageSize, setPageSize] = useState(6);
   const [pagination, setPagination] = useState({
     count: posts.length,
+    page: 1,
     from: 0,
     to: pageSize,
   });
@@ -21,12 +22,24 @@ export default function BlogList({ posts }: BlogListProps) {
   const handlePageChange = (pageNumber: number) => {
     const newFrom = (pageNumber - 1) * pageSize;
     const newTo = pageNumber * pageSize;
-    
+
     setPagination((prev) => {
       return {
         ...prev,
         from: newFrom,
         to: newTo,
+      };
+    });
+  };
+
+  const handlePageSizeChange = (changedPageSize: number) => {
+    setPageSize(changedPageSize);
+    setPagination((prev) => {
+      return {
+        ...prev,
+        page: 1,
+        from: 0,
+        to: changedPageSize,
       };
     });
   };
@@ -45,10 +58,17 @@ export default function BlogList({ posts }: BlogListProps) {
           }}
         />
       </Typography>
+      <PaginationSettingsBar
+        pageSize={pageSize}
+        handleChange={(changedPageSize) =>
+          handlePageSizeChange(changedPageSize)
+        }
+      />
       <PaginatedPosts posts={posts} from={pagination.from} to={pagination.to} />
       <AppPagination
         count={Math.ceil(pagination.count / pageSize)}
-        handleChange={(event, page) => handlePageChange(page)}
+        page={pagination.page}
+        handleChange={(_event, page) => handlePageChange(page)}
       />
     </>
   );
