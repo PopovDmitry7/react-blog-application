@@ -20,6 +20,7 @@ const drawerWidth = 240;
 const navItems = [
   { title: "Home", path: "/" },
   { title: "About", path: "/about" },
+  { title: "Contact", path: "/contact" },
 ];
 
 export default function DrawerAppBar() {
@@ -114,7 +115,7 @@ export default function DrawerAppBar() {
             <MenuIcon />
           </IconButton>
           <AnimatedLogo />
-          <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 1}}>
+          <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 1 }}>
             {navItems.map((item) => (
               <Button
                 component={ReactRouterLink}
