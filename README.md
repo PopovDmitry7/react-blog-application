@@ -44,6 +44,12 @@ This project is a simple blog application built with **React** and **Material UI
 - Provide A→Z and Z→A options – a simple toggle or Select.
 - Sorting should integrate smoothly with search & pagination (e.g., apply sort first, then paginate).
 
+### 9. Create Contact page with Contact Us form
+- Utils used for this:
+    - react-web-hook for form & validation
+    - emailjs for sending real-time emails
+    - Material UI form components
+
 ## 🌟 Bonus (Optional)
 - Show a loading spinner while fetching data.
 - Handle errors gracefully (e.g., display a message if data fails to load).

@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY } from "../secret";
 import {
   Stack,
@@ -11,10 +11,19 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  FormHelperText,
 } from "@mui/material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+
+type formFields = {
+  full_name: string;
+  email: string;
+  phone_number: string;
+  subject: string;
+  message: string;
+};
 
 export default function ContactUsForm() {
   const subjectMenuItems = [
@@ -23,46 +32,40 @@ export default function ContactUsForm() {
     { value: "blog_feature", displayValue: "Blog Feature" },
     { value: "other", displayValue: "Other" },
   ];
-  const [subject, setSubject] = useState("");
-  const [sending, setSending] = useState(false);
-  const [messageHelperText, setMessageHelperText] = useState("0/500");
-  const form = useRef<HTMLFormElement>(null);
+  const {
+    control,
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<formFields>();
+  const fullNameValue = watch("full_name", "");
+  const emailValue = watch("email", "");
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const phoneNumberValue = watch("phone_number", "");
+  const phoneNumberRegex =
+    /^\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/;
+  const subjectValue = watch("subject", "");
+  const messageValue = watch("message", "");
 
-  const onMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const len = event.target.value.length;
-    setMessageHelperText(`${len}/500`);
-  };
+  const onSubmit: SubmitHandler<formFields> = async (data) => {
+    console.log(data);
 
-  const sendEmail = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    console.log(form);
-
-    if (!form.current) return;
-
-    setSending(true);
-
-    emailjs
-      .sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
-      .then(() => {
-        alert("Message sent sucessfully!");
-        form.current?.reset();
-        setSubject("");
-        setMessageHelperText("0/500");
-      })
-      .catch((error) => {
-        console.error("Email send error:", error);
-        alert("Failed to send message, please try again.");
-      })
-      .finally(() => {
-        setSending(false);
-      });
+    try {
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, data, PUBLIC_KEY);
+      alert("Message sent successfully!");
+      reset();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send — please try again later.");
+    }
   };
 
   return (
     <Stack
       component="form"
-      gap={1}
+      gap={1.5}
       mt={4}
       sx={{
         width: {
@@ -74,8 +77,8 @@ export default function ContactUsForm() {
       }}
       justifyContent="center"
       alignItems="center"
-      ref={form}
-      onSubmit={sendEmail}
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
     >
       <Box
         width="100%"
@@ -85,7 +88,6 @@ export default function ContactUsForm() {
       >
         <TextField
           label="Full Name"
-          name="full_name"
           slotProps={{
             input: {
               startAdornment: (
@@ -95,15 +97,18 @@ export default function ContactUsForm() {
               ),
             },
           }}
-          required
+          required={fullNameValue.trim().length === 0}
           sx={{ width: { xs: "100%", sm: "50%" } }}
-          disabled={sending}
+          {...register("full_name", {
+            required: "Full Name is required",
+          })}
+          error={errors.full_name ? true : false}
+          helperText={errors.full_name?.message ? errors.full_name.message : ""}
         />
         <TextField
           type="email"
           label="Email Address"
-          name="email"
-          required
+          required={emailValue.trim().length === 0 || !!errors.email}
           sx={{ width: { xs: "100%", sm: "50%" } }}
           slotProps={{
             input: {
@@ -114,7 +119,15 @@ export default function ContactUsForm() {
               ),
             },
           }}
-          disabled={sending}
+          {...register("email", {
+            required: "Email is required",
+            validate: (value) => {
+              if (!emailRegex.test(value)) return "Enter a valid email";
+              return true;
+            },
+          })}
+          error={errors.email ? true : false}
+          helperText={errors.email?.message ? errors.email.message : ""}
         />
       </Box>
       <Box
@@ -125,8 +138,9 @@ export default function ContactUsForm() {
       >
         <TextField
           label="Phone Number"
-          name="phone_number"
-          required
+          required={
+            phoneNumberValue.trim().length === 0 || !!errors.phone_number
+          }
           sx={{ width: { xs: "100%", sm: "50%" } }}
           slotProps={{
             input: {
@@ -137,42 +151,66 @@ export default function ContactUsForm() {
               ),
             },
           }}
-          disabled={sending}
+          {...register("phone_number", {
+            required: "Phone Number is required",
+            validate: (value) => {
+              if (!phoneNumberRegex.test(value))
+                return "Enter a valid Phone Number";
+              return true;
+            },
+          })}
+          error={errors.phone_number ? true : false}
+          helperText={
+            errors.phone_number?.message ? errors.phone_number.message : ""
+          }
         />
-        <FormControl sx={{ width: { xs: "100%", sm: "50%" } }} required>
-          <InputLabel id="subject-label">Subject</InputLabel>
-          <Select
-            labelId="subject-label"
-            label="Subject"
-            name="subject"
-            value={subject}
-            onChange={(event) => setSubject(event.target.value)}
-            defaultValue=""
-            id="subject-select"
-            fullWidth
-            disabled={sending}
-          >
-            {subjectMenuItems.map((subject) => {
-              return (
-                <MenuItem key={subject.value || "none"} value={subject.value}>
-                  {subject.displayValue}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
+        <Controller
+          name="subject"
+          control={control}
+          rules={{ required: "Subject is required" }}
+          render={({ field }) => (
+            <FormControl
+              sx={{ width: { xs: "100%", sm: "50%" } }}
+              required={subjectValue === "" || !!errors.subject}
+              error={!!errors.subject}
+            >
+              <InputLabel id="subject-label">Subject</InputLabel>
+              <Select
+                {...field}
+                labelId="subject-label"
+                label="Subject"
+                value={subjectValue}
+                id="subject-select"
+              >
+                {subjectMenuItems.map((subject) => {
+                  return (
+                    <MenuItem
+                      key={subject.value || "none"}
+                      value={subject.value}
+                    >
+                      {subject.displayValue}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+              <FormHelperText>{errors.subject?.message || ""}</FormHelperText>
+            </FormControl>
+          )}
+        />
       </Box>
       <TextField
         label="Message"
-        name="message"
         minRows={4}
         multiline
         slotProps={{ htmlInput: { maxLength: 500 } }}
-        helperText={messageHelperText}
-        onChange={onMessageChange}
-        required
+        required={messageValue.trim().length === 0}
         fullWidth
-        disabled={sending}
+        {...register("message", {
+          required: "Message is required",
+          maxLength: 500,
+        })}
+        error={errors.message ? true : false}
+        helperText={errors.message?.message ? errors.message.message : ""}
       />
       <Button
         type="submit"
@@ -180,7 +218,7 @@ export default function ContactUsForm() {
         color="primary"
         sx={{ maxWidth: "20rem", mt: "1rem" }}
         size="medium"
-        disabled={sending}
+        disabled={isSubmitting}
       >
         Submit
       </Button>
